@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { EXPO_PUBLIC_API_URL } from '@env'; // Make sure to set this in your environment variables
+const EXPO_PUBLIC_API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 // Create an Axios instance
 const apiService = axios.create({

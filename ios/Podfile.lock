@@ -254,6 +254,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - ExpoSecureStore (14.0.0):
+    - ExpoModulesCore
   - ExpoSplashScreen (0.29.9):
     - ExpoModulesCore
   - ExpoSymbols (0.2.0):
@@ -2035,6 +2037,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLinking (from `../node_modules/expo-linking/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoSecureStore (from `../node_modules/expo-secure-store/ios`)
   - ExpoSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - ExpoSymbols (from `../node_modules/expo-symbols/ios`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
@@ -2152,6 +2155,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-linking/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoSecureStore:
+    :path: "../node_modules/expo-secure-store/ios"
   ExpoSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
   ExpoSymbols:
@@ -2316,6 +2321,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 783e68647b969b210a786047c3daa7b753dcac1f
   ExpoLinking: 05ab69d3b5b1b0600d6a1a043d8d1ea3bb61a71a
   ExpoModulesCore: ad07b0ca88e23bf1f10736cef63cd5bf0fcbf0a3
+  ExpoSecureStore: 06c3192d58ed167f619af3d53797c055f5ada785
   ExpoSplashScreen: 6387f6ff5293fed0218e18a59027e22f07e538d8
   ExpoSymbols: 81d7f433d7a7b20658029eae524a4fa93627159e
   ExpoSystemUI: 7a9e9895c2621980ae57277c9d1903ad3fd41bb1
