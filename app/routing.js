@@ -10,10 +10,6 @@ function RootLayout() {
     const auth = useSelector((state) => state.auth);
     const isAuthenticated = auth.isAuthenticated;
 
-    console.log("auth", auth);
-    // login -> false
-    //do login -> isAuthenticated -> true
-
     useEffect(() => {
         // Prevent splash screen from auto-hiding
         SplashScreen.preventAutoHideAsync();

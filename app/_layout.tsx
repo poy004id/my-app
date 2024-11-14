@@ -8,7 +8,7 @@ import 'react-native-reanimated';
 import Routing from './routing';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Provider as ReduxProvider } from "react-redux";
-import store from "../redux/store";
+import store from "@/redux/store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,13 +31,10 @@ export default function RootLayout() {
 
   return (
     <ReduxProvider store={store}>
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <Stack> */}
-        <Routing/>
-        {/* <Stack.Screen name="+not-found" /> */}
-      {/* </Stack> */}
-      <StatusBar style="auto" />
-    </ThemeProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Routing/>
+        {/* <StatusBar style="auto" /> */}
+      </ThemeProvider>
     </ReduxProvider>
   );
 }
