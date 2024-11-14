@@ -5,8 +5,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-
+import Routing from './routing';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Provider as ReduxProvider } from "react-redux";
+import store from "../redux/store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,13 +30,14 @@ export default function RootLayout() {
   }
 
   return (
+    <ReduxProvider store={store}>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {/* <Stack.Screen name="auth-nav"  />
-        <Stack.Screen name="app-nav"  /> */}
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      {/* <Stack> */}
+        <Routing/>
+        {/* <Stack.Screen name="+not-found" /> */}
+      {/* </Stack> */}
       <StatusBar style="auto" />
     </ThemeProvider>
+    </ReduxProvider>
   );
 }
