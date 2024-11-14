@@ -7,9 +7,7 @@ import { Slot, Stack } from "expo-router";
 
 function RootLayout() {
     const router = useRouter(); // Import useRouter from expo-router
-    const { uid, email_verified, apprenticeship_id } = useSelector(
-        (state) => state.user
-    );
+    const auth = useSelector((state) => state.auth);
     
     useEffect(() => {
         // Prevent splash screen from auto-hiding
