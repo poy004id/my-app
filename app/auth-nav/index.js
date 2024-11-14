@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Button, Text, Alert } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import apiService from '../../services/apiService';
 
 const TextInputExample = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+
+  const handleLogin = async (username, password) => { 
+    try {
+      const response = await apiService.post('/auth/login', { username,
+        password
+      });
+      console.log(response.data);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
 
   return (
     <SafeAreaProvider>
@@ -25,7 +39,7 @@ const TextInputExample = () => {
           />
           <Button
             title="Sign In"
-            onPress={() => Alert.alert('Simple Button pressed')}
+            onPress={() =>  handleLogin(username, password)}
           />
         </View>
       </SafeAreaView>
