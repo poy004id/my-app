@@ -9,6 +9,7 @@ import Routing from './routing';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Provider as ReduxProvider } from "react-redux";
 import store from '@/redux/store';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
