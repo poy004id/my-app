@@ -20,7 +20,7 @@ const FABWithModal = () => {
     try {
         setModalVisible(false);
         const response = apiService.post('/stase', {staseNm : staseNm});
-        setFormData({ name: '', description: '' }); // Reset the form
+        setStaseNm('');
         if (response.status === 200) {
             console.log('Stase added successfully');
             Alert.alert('Success', 'Stase added successfully');
