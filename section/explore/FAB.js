@@ -11,19 +11,20 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import apiService from '@/services/apiService';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
-const FABWithModal = () => {
+const FABWithModal = ({getStaseData}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [staseNm, setStaseNm] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
         setModalVisible(false);
-        const response = apiService.post('/stase', {staseNm : staseNm});
+        const response = await apiService.post('/stase', {staseNm : staseNm});
         setStaseNm('');
+        console.log('response', response);
         if (response.status === 200) {
-            console.log('Stase added successfully');
-            Alert.alert('Success', 'Stase added successfully');
+            getStaseData();
         }
     } catch (error) {
         console.log('error', error);

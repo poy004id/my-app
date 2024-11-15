@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import apiService from '@/services/apiService';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -37,10 +37,12 @@ const Explore = () => {
   }, []);
 
   const Item = ({ title, statusCd }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={{fontSize:10}}>{statusCd}</Text>
-    </View>
+    <TouchableOpacity onLongPress={() => console.log('Long pressed!')} style={styles.item}>
+      <View>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={{ fontSize: 10 }}>{statusCd}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
 
@@ -59,7 +61,7 @@ const Explore = () => {
           <FlatList
             ref={flatListRef}
             data={staseData}
-            renderItem={({ item }) => <Item title={item.staseNm}  statusCd={item.statusCd}/>}
+            renderItem={({ item }) => <Item title={item.staseNm} statusCd={item.statusCd} />}
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={styles.flatListContent}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -68,7 +70,7 @@ const Explore = () => {
             refreshing={refreshing} // Add refreshing prop
             onRefresh={onRefresh} // Add onRefresh handler
           />
-          <FABWithModal />
+          <FABWithModal getStaseData={getStaseData} />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
