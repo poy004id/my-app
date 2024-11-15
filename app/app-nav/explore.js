@@ -38,7 +38,7 @@ const Explore = () => {
   }, []);
 
   const Item = ({ title, statusCd }) => (
-    <TouchableOpacity onPress={() => showDetail(title, statusCd)} onLongPress={() => console.log('Long pressed!')} style={styles.item}>
+    <TouchableOpacity  onLongPress={() => showDetail(title, statusCd)} style={styles.item}>
       <View>
         <Text style={styles.title}>{title}</Text>
         <Text style={{ fontSize: 10 }}>{statusCd}</Text>
