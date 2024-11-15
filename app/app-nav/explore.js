@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import apiService from '@/services/apiService'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
@@ -10,7 +10,6 @@ const Explore = () => {
   const getStaseData = async () => {
     try {
       const response = await apiService.get('/stase')
-      // console.log("response", response.data.data)
       if (response.status == 200) {
         setStaseData(response.data.data)
       }
@@ -20,17 +19,30 @@ const Explore = () => {
     }
   }
 
-  console.log("staseData", staseData)
+  console.log("staseData [0]", staseData[0])
 
   useEffect(() => {
     getStaseData()
   }, [])
 
+  const Item = ({title}) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
+
   return (
     <SafeAreaProvider>
       <SafeAreaView>
         <View style={{padding:20}}>
-          <Text>Explore</Text>
+          <Text>Stase</Text>
+
+
+          <FlatList
+            data={staseData}
+            renderItem={({item}) => <Item title={item.staseNm} />}
+            keyExtractor={item => item.id}
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
