@@ -1,10 +1,19 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import apiService from '@/services/apiService';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Explore = () => {
   const [staseData, setStaseData] = useState([]);
+  const flatListRef = useRef(null); // Reference for FlatList
+  const [refreshing, setRefreshing] = useState(false); // Add refreshing state
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getStaseData();
+    setRefreshing(false);
+  };
+  
 
   const getStaseData = async () => {
     try {
@@ -30,17 +39,29 @@ const Explore = () => {
     </View>
   );
 
+
+  const scrollToTop = () => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+    }
+  };
+
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <Text style={styles.header}>Stase</Text>
           <FlatList
+            ref={flatListRef}
             data={staseData}
             renderItem={({ item }) => <Item title={item.staseNm}  statusCd={item.statusCd}/>}
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={styles.flatListContent}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
+            onEndReached={() => scrollToTop()}
+            refreshing={refreshing} // Add refreshing prop
+            onRefresh={onRefresh} // Add onRefresh handler
           />
         </View>
       </SafeAreaView>
