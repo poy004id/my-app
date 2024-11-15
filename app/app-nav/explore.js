@@ -69,7 +69,8 @@ const Explore = () => {
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={styles.flatListContent}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
-            onEndReached={() => scrollToTop()}
+            // onEndReached={() => scrollToTop()}
+            ListFooterComponent={() => <View style={{ height: 60 }} />}
             refreshing={refreshing} // Add refreshing prop
             onRefresh={onRefresh} // Add onRefresh handler
           />
