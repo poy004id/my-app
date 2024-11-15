@@ -33,7 +33,7 @@ export default function RootLayout() {
     <ReduxProvider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <Routing/>
-        {/* <StatusBar style="auto" /> */}
+        <StatusBar style="auto" />
       </ThemeProvider>
     </ReduxProvider>
   );

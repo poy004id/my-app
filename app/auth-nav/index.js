@@ -1,26 +1,47 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Button, Text, Alert } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-// import apiService from '../../services/apiService';
 import axios from 'axios';
 const EXPO_PUBLIC_API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+import {loginSuccess, loginFailure} from '../../redux/slice/auth';
+import {useDispatch} from 'react-redux';
+
+import * as SecureStore from 'expo-secure-store';
+import * as Crypto from 'expo-crypto';
 
 const TextInputExample = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const dispatch = useDispatch();
 
   const handleLogin = async (username, password) => { 
     try {
+      const hashedMD5Password = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.MD5,
+        password
+      );
+
+      const hashedSHA256Password = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        hashedMD5Password
+      );
+
+      console.log("hashedPassword", hashedSHA256Password);
       const response = await axios.post(`${EXPO_PUBLIC_API_URL}/auth/login`, {
         username,
-        password});
+        password: hashedSHA256Password});
       console.log(response.data);
+
+      dispatch(loginSuccess({ user: response.data.data.user }));
+      await SecureStore.setItemAsync('accessToken', response.data.data.accessToken  );
+      await SecureStore.setItemAsync('refreshToken', response.data.data.refreshToken  );
+
     }
     catch (error) {
-      console.error(error);
+      console.error("error", error);
     }
   }
-
 
   return (
     <SafeAreaProvider>
