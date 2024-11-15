@@ -41,6 +41,12 @@ apiService.interceptors.response.use(
             Alert.alert('Session Expired', 'Please log in again.');
             // Optionally, add a function to log the user out or navigate to login
         }
+        if (error.response && error.response.status === 401 && error.reponse.code == 'accessTokenExpired') {
+            // jalankan fungsi refresh token
+            
+            Alert.alert('Session Expired', 'Please log in again.');
+            // Optionally, add a function to log the user out or navigate to login
+        }
 
         // Network error handling
         if (error.message === 'Network Error') {
