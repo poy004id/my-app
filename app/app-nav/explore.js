@@ -9,14 +9,15 @@ const Explore = () => {
   const [staseData, setStaseData] = useState([]);
   const flatListRef = useRef(null); // Reference for FlatList
   const [refreshing, setRefreshing] = useState(false); // Add refreshing state
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
 
   const onRefresh = () => {
     setRefreshing(true);
     getStaseData();
     setRefreshing(false);
   };
-
-
 
 
   const getStaseData = async () => {
@@ -37,7 +38,7 @@ const Explore = () => {
   }, []);
 
   const Item = ({ title, statusCd }) => (
-    <TouchableOpacity onLongPress={() => console.log('Long pressed!')} style={styles.item}>
+    <TouchableOpacity onPress={() => showDetail(title, statusCd)} onLongPress={() => console.log('Long pressed!')} style={styles.item}>
       <View>
         <Text style={styles.title}>{title}</Text>
         <Text style={{ fontSize: 10 }}>{statusCd}</Text>
@@ -45,12 +46,11 @@ const Explore = () => {
     </TouchableOpacity>
   );
 
-
-  const scrollToTop = () => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
-    }
+  const showDetail = (title, statusCd) => {
+    setSelectedItem({ title, statusCd });
+    setModalVisible(true);
   };
+
 
 
   return (
@@ -72,6 +72,32 @@ const Explore = () => {
           />
           <FABWithModal getStaseData={getStaseData} />
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.modalOverlay}>
+              <TouchableWithoutFeedback>
+                <View style={styles.modalContainer}>
+                  <Text style={styles.modalTitle}>Detail Stase</Text>
+                  <Text style={styles.modalText}>Title: {selectedItem?.title}</Text>
+                  <Text style={styles.modalText}>Status Code: {selectedItem?.statusCd}</Text>
+                  <Text>Doraemon is a fictional title character in the Japanese manga and anime eponymous series created by Fujiko F. Fujio. Doraemon is a male robotic earless cat that travels back in time from the 22nd century to aid a preteen boy named Nobita. Wikipedia</Text>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <Text style={styles.closeButtonText}>Close</Text>
+                  </TouchableOpacity>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -135,4 +161,42 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 8, // Android shadow
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  closeButton: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  
 });
