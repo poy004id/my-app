@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Modal } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import apiService from '@/services/apiService';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
+import FABWithModal from '@/section/explore/FAB';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Explore = () => {
@@ -17,13 +17,7 @@ const Explore = () => {
   };
 
 
-  const ButtonAdd = () => {
-    return (
-      <TouchableOpacity style={styles.fab}>
-        <MaterialCommunityIcons name="plus" size={28} color="white" />
-      </TouchableOpacity>
-    );
-  };
+
 
   const getStaseData = async () => {
     try {
@@ -74,7 +68,7 @@ const Explore = () => {
             refreshing={refreshing} // Add refreshing prop
             onRefresh={onRefresh} // Add onRefresh handler
           />
-          <ButtonAdd />
+          <FABWithModal />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
