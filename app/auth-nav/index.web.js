@@ -73,6 +73,7 @@ const TextInputExample = () => {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <View style={styles.innerContainer}>
+          <Text> Web coyyy</Text>
           <TextInput
             style={styles.input}
             onChangeText={(text) => setUsername(text)}

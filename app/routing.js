@@ -3,37 +3,56 @@ import { useSelector } from "react-redux";
 import { useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen"; // Import SplashScreen
 import { Slot, Stack } from "expo-router";
-import * as SecureStore from 'expo-secure-store';
-import apiService from "../services/apiService";
+
+import apiService from "@/services/apiService";
+import { loginSuccess } from "@/redux/slice/auth";
+import { useDispatch } from "react-redux";
+import * as SecureStore from "expo-secure-store";
+
 
  function RootLayout() {
     const router = useRouter(); // Import useRouter from expo-router
     const auth = useSelector((state) => state.auth);
     const isAuthenticated = auth.isAuthenticated;
-    console.log("auth", auth);
-    // const accessToken = await SecureStore.getItemAsync('accessToken');
+    const dispatch = useDispatch();
+
+    const getAccessToken = async () => {
+        try {
+          const accessToken = await SecureStore.getItemAsync('accessToken');
+          return accessToken;
+        } catch (error) {
+          console.error("error", error);
+          return null;
+        }
+      }
 
     const checkAuth = async () => {
         try {
-            const response = await apiService.get('/auth/check');
-            console.log("response", response);
-            return response.data;
+          const accessToken = await getAccessToken();
+          const response = await apiService.get('/auth/check', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          console.log("response", response.data);
+          dispatch(loginSuccess({user: response.data.user}));  // Corrected line
+          return response.data;
+        } catch (error) {
+            router.replace("/auth-nav")
         }
-        catch (error) {
-            console.error("error", error);
-        }
-    }
+      };
 
     useEffect(() => {
         SplashScreen.preventAutoHideAsync();
-        // if (isAuthenticated && accessToken) {
-        //     router.replace("/app-nav");
-        // }
-        // else 
-        // if (!isAuthenticated && !accessToken) {
-        if (!isAuthenticated) {
+        const accessToken = getAccessToken();
+        
+        if (!isAuthenticated && !accessToken) {
             router.replace("/auth-nav")
-        } else {
+        } 
+        else if (!isAuthenticated && accessToken) {
+            checkAuth();
+        }
+        else {
             router.replace("/app-nav");
         }
 
