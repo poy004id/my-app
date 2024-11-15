@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Modal, TouchableWithoutFeedback, TextInput } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import apiService from '@/services/apiService';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ const Explore = () => {
   const [refreshing, setRefreshing] = useState(false); // Add refreshing state
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [search, setSearch] = useState('');
 
 
   const onRefresh = () => {
@@ -33,6 +34,15 @@ const Explore = () => {
 
   console.log('staseData [0]', staseData[0]);
 
+  const filterData = (data) => {
+    if (!search.trim()) {
+      return data; // Return unfiltered data if search is empty or only spaces
+    }
+    return data.filter((item) =>
+      item.staseNm.toLowerCase().includes(search.toLowerCase())
+    );
+  };
+  
   useEffect(() => {
     getStaseData();
   }, []);
@@ -58,9 +68,15 @@ const Explore = () => {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <Text style={styles.header}>Stase</Text>
+          <TextInput
+            style={{ height: 40, borderColor: 'gray', borderWidth: 1 , padding: 10, borderRadius: 5}}
+            placeholder="Search"
+            value={search}
+            onChangeText={(text) => setSearch(text)}
+          />
           <FlatList
             ref={flatListRef}
-            data={staseData}
+            data={filterData(staseData)}
             renderItem={({ item }) => <Item title={item.staseNm} statusCd={item.statusCd} />}
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={styles.flatListContent}
