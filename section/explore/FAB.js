@@ -7,21 +7,27 @@ import {
   TextInput,
   Text,
   Button,
+  Alert,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import apiService from '@/services/apiService';
 
 const FABWithModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [formData, setFormData] = useState({ name: '', description: '' });
-
-  const handleInputChange = (key, value) => {
-    setFormData((prevState) => ({ ...prevState, [key]: value }));
-  };
+  const [staseNm, setStaseNm] = useState('');
 
   const handleSubmit = () => {
-    console.log('Form Data:', formData);
-    setModalVisible(false);
-    setFormData({ name: '', description: '' }); // Reset the form
+    try {
+        setModalVisible(false);
+        const response = apiService.post('/stase', {staseNm : staseNm});
+        setFormData({ name: '', description: '' }); // Reset the form
+        if (response.status === 200) {
+            console.log('Stase added successfully');
+            Alert.alert('Success', 'Stase added successfully');
+        }
+    } catch (error) {
+        console.log('error', error);
+    }
   };
 
   return (
@@ -43,24 +49,15 @@ const FABWithModal = () => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Add New Item</Text>
+            <Text style={styles.modalTitle}>Add New Stase</Text>
 
             {/* Form Inputs */}
             <TextInput
               style={styles.input}
               placeholder="Name"
-              value={formData.name}
-              onChangeText={(value) => handleInputChange('name', value)}
+              value={staseNm}
+              onChangeText={(text) => setStaseNm(text)}
             />
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="Description"
-              value={formData.description}
-              multiline={true}
-              numberOfLines={4}
-              onChangeText={(value) => handleInputChange('description', value)}
-            />
-
             {/* Action Buttons */}
             <View style={styles.buttonRow}>
               <Button title="Cancel" onPress={() => setModalVisible(false)} />
