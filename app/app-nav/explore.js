@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import apiService from '@/services/apiService';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Explore = () => {
   const [staseData, setStaseData] = useState([]);
@@ -13,7 +15,15 @@ const Explore = () => {
     getStaseData();
     setRefreshing(false);
   };
-  
+
+
+  const ButtonAdd = () => {
+    return (
+      <TouchableOpacity style={styles.fab}>
+        <MaterialCommunityIcons name="plus" size={28} color="white" />
+      </TouchableOpacity>
+    );
+  };
 
   const getStaseData = async () => {
     try {
@@ -63,6 +73,7 @@ const Explore = () => {
             refreshing={refreshing} // Add refreshing prop
             onRefresh={onRefresh} // Add onRefresh handler
           />
+          <ButtonAdd />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -110,5 +121,21 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 8, // Spacing between items
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007bff', // Customize your preferred color here
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 8, // Android shadow
   },
 });
